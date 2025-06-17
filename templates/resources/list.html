@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resources</title>
+</head>
+<body>
+    <h1>Resources</h1>
+    <a href="{% url 'resource_add' %}">Add Resource</a>
+    <ul>
+        {% for resource in resources %}
+        <li>
+            <a href="{{ resource.url }}">{{ resource.description }}</a> - {{ resource.category.name }} - Upvotes: {{ resource.upvotes }}
+            <a href="{% url 'resource_upvote' resource.pk %}">Upvote</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
