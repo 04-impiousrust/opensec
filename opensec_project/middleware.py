@@ -12,6 +12,15 @@ class RateLimitMiddleware:
         self.limit = getattr(settings, "RATE_LIMIT_REQUESTS", 60)
         self.window = getattr(settings, "RATE_LIMIT_WINDOW", 60)
 
+        try:
+            self.limit = int(self.limit)
+            self.window = int(self.window)
+        except (TypeError, ValueError) as exc:
+            raise ValueError("RATE_LIMIT_REQUESTS and RATE_LIMIT_WINDOW must be integers") from exc
+
+        if self.limit <= 0 or self.window <= 0:
+            raise ValueError("RATE_LIMIT_REQUESTS and RATE_LIMIT_WINDOW must be positive")
+
     def __call__(self, request):
         ip = request.META.get("REMOTE_ADDR", "")
         now = time.time()
