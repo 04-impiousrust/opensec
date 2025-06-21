@@ -4,7 +4,7 @@ This project provides a simple Django application for collecting and ranking cyb
 
 Each resource on the list page displays a small thumbnail preview generated
 server side. Thumbnails are fetched from [thum.io](https://www.thum.io/). The
-image is then inverted using Pillow so the preview fits the application's dark
+image is inverted in CSS so the preview fits the application's dark
 theme.
 
 ## Setup
