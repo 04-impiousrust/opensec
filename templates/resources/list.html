@@ -24,6 +24,11 @@
         a.upvote-button {
             margin-left: 12px;
         }
+
+        /* Match spacing for the "Upvoted" text shown after voting */
+        span.upvoted-text {
+            margin-left: 12px;
+        }
         h1 {
             margin-top: 0;
             margin-bottom: 20px;
@@ -61,7 +66,7 @@
             <img class="thumbnail" src="{{ resource.thumbnail_url }}" alt="{{ resource.description }} thumbnail">
             <a href="{{ resource.url }}">{{ resource.description }}</a> - {{ resource.category.name }} - Upvotes: {{ resource.upvotes }}
             {% if request.session.upvoted_resources and resource.pk in request.session.upvoted_resources %}
-                <span>Upvoted</span>
+                <span class="upvoted-text">Upvoted</span>
             {% else %}
                 <a href="{% url 'resource_upvote' resource.pk %}" class="button upvote-button">Upvote</a>
             {% endif %}
