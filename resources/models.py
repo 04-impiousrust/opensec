@@ -26,6 +26,8 @@ class Resource(models.Model):
     def thumbnail_url(self):
         """Return the screenshot URL for the resource."""
         encoded_url = quote(self.url, safe=':/')
-        # Use microlink.io to request a screenshot. The colorScheme parameter
-        # forces a dark theme so thumbnails match the rest of the interface.
-        return f"https://image.microlink.io/{encoded_url}?colorScheme=dark"
+        # Use microlink.io to request a screenshot with dark theme enabled.
+        # The service expects the target URL as a query parameter.
+        return (
+            f"https://image.microlink.io/?url={encoded_url}&colorScheme=dark"
+        )
