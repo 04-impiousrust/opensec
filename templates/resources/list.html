@@ -69,6 +69,7 @@
     <h1>Resources</h1>
     <a href="{% url 'resource_add' %}" class="button">Add Resource</a>
     <a href="{% url 'category_add' %}" class="button">Add Category</a>
+    <input type="text" id="search-box" placeholder="Search..." style="margin-left:8px;padding:4px 8px;background:#1e1e1e;border:1px solid #444;border-radius:4px;color:#f0f0f0;">
     <form method="get" style="margin-top:20px;">
         <label for="category">Category:</label>
         <select name="category" id="category">
@@ -90,6 +91,13 @@
         });
         document.getElementById('sort').addEventListener('change', function () {
             this.form.submit();
+        });
+        document.getElementById('search-box').addEventListener('input', function () {
+            const filter = this.value.toLowerCase();
+            document.querySelectorAll('ul li').forEach(function(li) {
+                const text = li.textContent.toLowerCase();
+                li.style.display = text.includes(filter) ? '' : 'none';
+            });
         });
     </script>
     <ul>
