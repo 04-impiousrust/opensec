@@ -26,4 +26,6 @@ class Resource(models.Model):
     def thumbnail_url(self):
         """Return the screenshot URL for the resource."""
         encoded_url = quote(self.url, safe=':/')
-        return f"https://image.thum.io/get/{encoded_url}"
+        # Request the screenshot with dark mode enabled so thumbnails
+        # reflect how the site appears when a browser prefers a dark theme.
+        return f"https://image.thum.io/get/dark/{encoded_url}"
