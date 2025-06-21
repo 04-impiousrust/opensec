@@ -96,7 +96,9 @@
             const filter = this.value.toLowerCase();
             document.querySelectorAll('ul li').forEach(function(li) {
                 const text = li.textContent.toLowerCase();
-                li.style.display = text.includes(filter) ? '' : 'none';
+                var link = li.querySelector('a[href^="http"]');
+                var url = link ? link.getAttribute('href').toLowerCase() : '';
+                li.style.display = (text.includes(filter) || url.includes(filter)) ? '' : 'none';
             });
         });
     </script>
