@@ -71,3 +71,14 @@ class RateLimitMiddlewareTest(TestCase):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 429)
 
+
+class SecurityHeadersTest(TestCase):
+    @override_settings(
+        SECURE_CONTENT_TYPE_NOSNIFF=True,
+        SECURE_REFERRER_POLICY='same-origin',
+    )
+    def test_security_headers_present(self):
+        response = self.client.get('/')
+        self.assertEqual(response['X-Content-Type-Options'], 'nosniff')
+        self.assertEqual(response['Referrer-Policy'], 'same-origin')
+
