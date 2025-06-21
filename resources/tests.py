@@ -34,6 +34,6 @@ class ThumbnailURLTest(TestCase):
         res = Resource.objects.create(url='http://example.com', description='Ex', category=cat)
         self.assertEqual(
             res.thumbnail_url,
-            'https://image.thum.io/get/http%3A%2F%2Fexample.com'
+            'https://image.thum.io/get/http://example.com'
         )
 

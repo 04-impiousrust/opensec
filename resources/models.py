@@ -24,5 +24,6 @@ class Resource(models.Model):
 
     @property
     def thumbnail_url(self):
-        encoded_url = quote(self.url, safe='')
+        """Return the screenshot URL for the resource."""
+        encoded_url = quote(self.url, safe=':/')
         return f"https://image.thum.io/get/{encoded_url}"
