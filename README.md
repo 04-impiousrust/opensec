@@ -7,6 +7,14 @@ server side. Thumbnails are fetched from [thum.io](https://www.thum.io/). The
 image is inverted in CSS so the preview fits the application's dark
 theme.
 
+## Security
+
+The application enables several security-related HTTP headers via
+Django's `SecurityMiddleware`. These include a referrer policy of
+`same-origin` and the `X-Content-Type-Options` header to prevent MIME
+type sniffing. Session and CSRF cookies are also marked as secure when
+the environment provides HTTPS.
+
 ## Setup
 
 1. Ensure Django is installed (`pip install django`).
