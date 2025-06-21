@@ -95,7 +95,9 @@
     <ul>
         {% for resource in resources %}
         <li>
-            <img class="thumbnail" src="{{ resource.thumbnail_url }}" alt="{{ resource.description }} thumbnail">
+            <a href="{{ resource.url }}">
+                <img class="thumbnail" src="{{ resource.thumbnail_url }}" alt="{{ resource.description }} thumbnail">
+            </a>
             <a href="{{ resource.url }}">{{ resource.description }}</a> - {{ resource.category.name }} - Upvotes: {{ resource.upvotes }}
             {% if request.session.upvoted_resources and resource.pk in request.session.upvoted_resources %}
                 <span class="upvoted-text">Upvoted</span>
