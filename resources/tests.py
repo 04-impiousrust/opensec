@@ -34,6 +34,6 @@ class ThumbnailURLTest(TestCase):
         res = Resource.objects.create(url='http://example.com', description='Ex', category=cat)
         self.assertEqual(
             res.thumbnail_url,
-            'https://image.thum.io/get/dark/http://example.com'
+            'https://image.microlink.io/http://example.com?colorScheme=dark'
         )
 
