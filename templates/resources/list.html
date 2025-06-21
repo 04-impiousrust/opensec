@@ -30,6 +30,7 @@
 <body>
     <h1>Resources</h1>
     <a href="{% url 'resource_add' %}" class="button">Add Resource</a>
+    <a href="{% url 'category_add' %}" class="button">Add Category</a>
     <ul>
         {% for resource in resources %}
         <li>
