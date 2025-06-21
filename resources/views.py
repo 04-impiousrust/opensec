@@ -26,6 +26,10 @@ class CategoryCreateView(CreateView):
 
 def upvote(request, pk):
     resource = get_object_or_404(Resource, pk=pk)
-    resource.upvotes += 1
-    resource.save()
+    upvoted = request.session.get('upvoted_resources', [])
+    if pk not in upvoted:
+        resource.upvotes += 1
+        resource.save()
+        upvoted.append(pk)
+        request.session['upvoted_resources'] = upvoted
     return redirect('resource_list')
