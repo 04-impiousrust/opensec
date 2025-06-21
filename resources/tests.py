@@ -32,8 +32,6 @@ class ThumbnailURLTest(TestCase):
     def test_thumbnail_url_format(self):
         cat = Category.objects.create(name='ThumbCat')
         res = Resource.objects.create(url='http://example.com', description='Ex', category=cat)
-        self.assertEqual(
-            res.thumbnail_url,
-            'https://image.microlink.io/?url=http://example.com&colorScheme=dark'
-        )
+        expected = f'/thumbnail/{res.pk}/'
+        self.assertEqual(res.thumbnail_url, expected)
 
