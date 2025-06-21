@@ -82,8 +82,16 @@
             <option value="upvotes" {% if selected_sort == 'upvotes' %}selected{% endif %}>Upvotes</option>
             <option value="created" {% if selected_sort == 'created' %}selected{% endif %}>Newest</option>
         </select>
-        <button type="submit" class="button filter-button">Apply</button>
+        <button type="submit" class="button filter-button" style="display:none;">Apply</button>
     </form>
+    <script>
+        document.getElementById('category').addEventListener('change', function () {
+            this.form.submit();
+        });
+        document.getElementById('sort').addEventListener('change', function () {
+            this.form.submit();
+        });
+    </script>
     <ul>
         {% for resource in resources %}
         <li>
