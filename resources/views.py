@@ -12,6 +12,26 @@ class ResourceListView(ListView):
     template_name = 'resources/list.html'
     context_object_name = 'resources'
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        category_id = self.request.GET.get("category")
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
+
+        sort = self.request.GET.get("sort")
+        if sort == "created":
+            queryset = queryset.order_by("-created")
+        elif sort == "upvotes":
+            queryset = queryset.order_by("-upvotes")
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["categories"] = Category.objects.all()
+        context["selected_category"] = self.request.GET.get("category", "")
+        context["selected_sort"] = self.request.GET.get("sort", "")
+        return context
+
 
 class ResourceCreateView(CreateView):
     model = Resource

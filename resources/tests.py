@@ -35,3 +35,23 @@ class ThumbnailURLTest(TestCase):
         expected = f'/thumbnail/{res.pk}/'
         self.assertEqual(res.thumbnail_url, expected)
 
+
+class ListViewFilterSortTest(TestCase):
+    def setUp(self):
+        self.cat1 = Category.objects.create(name='Cat1')
+        self.cat2 = Category.objects.create(name='Cat2')
+        self.r1 = Resource.objects.create(url='http://1.com', description='R1', category=self.cat1, upvotes=1)
+        self.r2 = Resource.objects.create(url='http://2.com', description='R2', category=self.cat2, upvotes=5)
+        self.r3 = Resource.objects.create(url='http://3.com', description='R3', category=self.cat1, upvotes=2)
+
+    def test_filter_by_category(self):
+        response = self.client.get('/', {'category': self.cat1.id})
+        resources = list(response.context['resources'])
+        self.assertEqual(resources, [self.r3, self.r1])
+
+    def test_sort_by_created(self):
+        response = self.client.get('/', {'sort': 'created'})
+        resources = list(response.context['resources'])
+        self.assertEqual(resources[0], self.r3)
+        self.assertEqual(resources[-1], self.r1)
+
