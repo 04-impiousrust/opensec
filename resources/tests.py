@@ -1,4 +1,5 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
+from django.conf import settings
 from .models import Category, Resource
 
 
@@ -54,4 +55,19 @@ class ListViewFilterSortTest(TestCase):
         resources = list(response.context['resources'])
         self.assertEqual(resources[0], self.r3)
         self.assertEqual(resources[-1], self.r1)
+
+
+class RateLimitMiddlewareTest(TestCase):
+    @override_settings(
+        MIDDLEWARE=settings.MIDDLEWARE + ['opensec_project.middleware.RateLimitMiddleware'],
+        RATE_LIMIT_REQUESTS=2,
+        RATE_LIMIT_WINDOW=60,
+    )
+    def test_rate_limit_blocks_excess_requests(self):
+        # First two requests should pass
+        self.client.get('/')
+        self.client.get('/')
+        # Third request should be blocked
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 429)
 
