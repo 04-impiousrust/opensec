@@ -24,6 +24,15 @@
             margin: 8px 0;
             padding: 10px;
             border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+        img.thumbnail {
+            width: 120px;
+            height: 90px;
+            margin-right: 10px;
+            object-fit: cover;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -34,6 +43,7 @@
     <ul>
         {% for resource in resources %}
         <li>
+            <img class="thumbnail" src="{{ resource.thumbnail_url }}" alt="{{ resource.description }} thumbnail">
             <a href="{{ resource.url }}">{{ resource.description }}</a> - {{ resource.category.name }} - Upvotes: {{ resource.upvotes }}
             {% if request.session.upvoted_resources and resource.pk in request.session.upvoted_resources %}
                 <span>Upvoted</span>

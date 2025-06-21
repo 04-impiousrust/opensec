@@ -26,3 +26,14 @@ class UpvoteLimitTest(TestCase):
         response = self.client.get(f'/upvote/{res.pk}/')
         res.refresh_from_db()
         self.assertEqual(res.upvotes, 1)
+
+
+class ThumbnailURLTest(TestCase):
+    def test_thumbnail_url_format(self):
+        cat = Category.objects.create(name='ThumbCat')
+        res = Resource.objects.create(url='http://example.com', description='Ex', category=cat)
+        self.assertEqual(
+            res.thumbnail_url,
+            'https://image.thum.io/get/http%3A%2F%2Fexample.com'
+        )
+

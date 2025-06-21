@@ -1,4 +1,5 @@
 from django.db import models
+from urllib.parse import quote
 
 
 class Category(models.Model):
@@ -20,3 +21,8 @@ class Resource(models.Model):
 
     def __str__(self):
         return self.url
+
+    @property
+    def thumbnail_url(self):
+        encoded_url = quote(self.url, safe='')
+        return f"https://image.thum.io/get/{encoded_url}"
