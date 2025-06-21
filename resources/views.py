@@ -5,6 +5,7 @@ from django.http import HttpResponse, Http404
 from .models import Resource, Category
 import io
 from urllib.request import urlopen
+from urllib.error import URLError, HTTPError
 
 
 class ResourceListView(ListView):
@@ -63,8 +64,12 @@ def thumbnail(request, pk):
     resource = get_object_or_404(Resource, pk=pk)
     screenshot_url = f"https://image.thum.io/get/{resource.url}"
     try:
-        with urlopen(screenshot_url) as response:
+        with urlopen(screenshot_url, timeout=5) as response:
+            if getattr(response, "status", 200) != 200:
+                raise HTTPError(screenshot_url, response.status, "", {}, None)
             image_bytes = response.read()
+    except (HTTPError, URLError, TimeoutError) as exc:
+        raise Http404 from exc
     except Exception as exc:
         raise Http404 from exc
 

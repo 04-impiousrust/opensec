@@ -1,5 +1,8 @@
 from django.test import TestCase, override_settings
 from django.conf import settings
+from unittest import mock
+from urllib.error import URLError
+from opensec_project.middleware import RateLimitMiddleware
 from .models import Category, Resource
 
 
@@ -81,4 +84,25 @@ class SecurityHeadersTest(TestCase):
         response = self.client.get('/')
         self.assertEqual(response['X-Content-Type-Options'], 'nosniff')
         self.assertEqual(response['Referrer-Policy'], 'same-origin')
+
+
+class ThumbnailErrorHandlingTest(TestCase):
+    def test_thumbnail_http_error_returns_404(self):
+        cat = Category.objects.create(name='ErrCat')
+        res = Resource.objects.create(url='http://example.com', description='Ex', category=cat)
+
+        with mock.patch('resources.views.urlopen', side_effect=URLError('boom')):
+            response = self.client.get(f'/thumbnail/{res.pk}/')
+            self.assertEqual(response.status_code, 404)
+
+
+class MiddlewareConfigTest(TestCase):
+    def test_invalid_rate_limit_settings_raise_error(self):
+        with self.assertRaises(ValueError):
+            with override_settings(RATE_LIMIT_REQUESTS='bad', RATE_LIMIT_WINDOW=60):
+                RateLimitMiddleware(lambda r: r)
+
+        with self.assertRaises(ValueError):
+            with override_settings(RATE_LIMIT_REQUESTS=0, RATE_LIMIT_WINDOW=60):
+                RateLimitMiddleware(lambda r: r)
 
