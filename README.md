@@ -2,9 +2,10 @@
 
 This project provides a simple Django application for collecting and ranking cybersecurity resources by upvotes.
 
-Each resource on the list page now displays a small thumbnail preview fetched from
-[microlink.io](https://microlink.io/). The screenshots are requested with a `colorScheme=dark`
-so thumbnails match the rest of the interface.
+Each resource on the list page displays a small thumbnail preview generated
+server side. Thumbnails are fetched from [thum.io](https://www.thum.io/). The
+image is then inverted using Pillow so the preview fits the application's dark
+theme.
 
 ## Setup
 

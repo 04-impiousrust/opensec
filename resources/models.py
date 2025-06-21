@@ -1,5 +1,5 @@
 from django.db import models
-from urllib.parse import quote
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -24,10 +24,5 @@ class Resource(models.Model):
 
     @property
     def thumbnail_url(self):
-        """Return the screenshot URL for the resource."""
-        encoded_url = quote(self.url, safe=':/')
-        # Use microlink.io to request a screenshot with dark theme enabled.
-        # The service expects the target URL as a query parameter.
-        return (
-            f"https://image.microlink.io/?url={encoded_url}&colorScheme=dark"
-        )
+        """Return the URL of the generated thumbnail."""
+        return reverse("resource_thumbnail", args=[self.pk])
