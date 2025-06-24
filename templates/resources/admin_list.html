@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Resources</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        a { color: #90caf9; }
+        .button {
+            background: #1e88e5;
+            color: #fff;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #444;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manage Resources</h1>
+    <a href="{% url 'admin_resource_add' %}" class="button">Add Resource</a>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>URL</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Upvotes</th>
+            <th>Actions</th>
+        </tr>
+        {% for res in resources %}
+        <tr>
+            <td>{{ res.id }}</td>
+            <td><a href="{{ res.url }}">{{ res.url }}</a></td>
+            <td>{{ res.description }}</td>
+            <td>{{ res.category.name }}</td>
+            <td>{{ res.upvotes }}</td>
+            <td>
+                <a href="{% url 'admin_resource_edit' res.pk %}">Edit</a>
+                |
+                <a href="{% url 'admin_resource_delete' res.pk %}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

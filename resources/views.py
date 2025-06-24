@@ -6,6 +6,10 @@ from .models import Resource, Category
 import io
 from urllib.request import urlopen
 from urllib.error import URLError, HTTPError
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import user_passes_test
+from django.views.generic import UpdateView, DeleteView
+staff_member_required = user_passes_test(lambda u: u.is_staff)
 
 
 class ResourceListView(ListView):
@@ -86,3 +90,31 @@ def thumbnail(request, pk):
         return HttpResponse(buffer.getvalue(), content_type="image/png")
     except Exception as exc:
         raise Http404 from exc
+@method_decorator(staff_member_required, name='dispatch')
+class ResourceAdminListView(ListView):
+    model = Resource
+    template_name = 'resources/admin_list.html'
+    context_object_name = 'resources'
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class ResourceAdminCreateView(CreateView):
+    model = Resource
+    fields = ['url', 'description', 'category']
+    template_name = 'resources/admin_form.html'
+    success_url = reverse_lazy('admin_resource_list')
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class ResourceAdminUpdateView(UpdateView):
+    model = Resource
+    fields = ['url', 'description', 'category', 'upvotes']
+    template_name = 'resources/admin_form.html'
+    success_url = reverse_lazy('admin_resource_list')
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class ResourceAdminDeleteView(DeleteView):
+    model = Resource
+    template_name = 'resources/admin_confirm_delete.html'
+    success_url = reverse_lazy('admin_resource_list')
