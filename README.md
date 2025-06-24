@@ -17,6 +17,7 @@ the environment provides HTTPS.
 
 ## Setup
 
+
 1. Ensure Django is installed (`pip install django`).
 2. Run migrations:
 
@@ -24,10 +25,16 @@ the environment provides HTTPS.
 python manage.py migrate
 ```
 
-3. Start the server:
+3. Create a superuser:
+
+```bash
+python manage.py createsuperuser
+```
+
+4. Start the server:
 
 ```bash
 python manage.py runserver
 ```
 
-Visit `http://localhost:8000/` to see the resources list.
+Visit `http://localhost:8000/` to see the resources list and `http://localhost:8000/manage/` for the admin panel.
